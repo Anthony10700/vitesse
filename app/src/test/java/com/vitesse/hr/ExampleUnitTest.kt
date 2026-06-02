@@ -1,4 +1,4 @@
-package com.example.vitesse
+package com.vitesse.hr
 
 import org.junit.Test
 
