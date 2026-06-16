@@ -7,4 +7,28 @@
     <string name="list_tab_favorites">Favoris</string>
     <string name="list_empty">Aucun candidat</string>
     <string name="list_fab_add_description">Ajouter un candidat</string>
+
+    <!-- Messages d'erreur du formulaire -->
+    <string name="error_required">Champ obligatoire</string>
+    <string name="error_email_invalid">Format d\'email invalide</string>
+    <string name="error_date_required">Date de naissance requise</string>
+    <string name="error_date_future">La date doit être dans le passé</string>
+    <string name="error_salary_invalid">Salaire invalide</string>
+    <string name="error_salary_negative">Le salaire doit être positif</string>
+
+    <!-- Écran formulaire (création / édition) -->
+    <string name="form_screen_title_add">Ajouter un candidat</string>
+    <string name="form_screen_title_edit">Modifier un candidat</string>
+    <string name="form_back_description">Retour</string>
+    <string name="form_photo_description">Photo du candidat</string>
+    <string name="form_field_first_name">Prénom</string>
+    <string name="form_field_last_name">Nom</string>
+    <string name="form_field_phone">Téléphone</string>
+    <string name="form_field_email">Email</string>
+    <string name="form_field_date_of_birth">Date de naissance</string>
+    <string name="form_field_salary">Salaire attendu (€)</string>
+    <string name="form_field_notes">Notes</string>
+    <string name="form_button_save">Sauvegarder</string>
+    <string name="form_date_picker_ok">OK</string>
+    <string name="form_date_picker_cancel">Annuler</string>
 </resources>

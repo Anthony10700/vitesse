@@ -8,7 +8,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.vitesse.hr.ui.edit.AddEditCandidateScreen
 import com.vitesse.hr.ui.list.CandidateListScreen
+import com.vitesse.hr.ui.navigation.VitesseDestinations
 import com.vitesse.hr.ui.theme.VitesseTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,9 +32,51 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    CandidateListScreen()
+                    VitesseNavHost()
                 }
             }
+        }
+    }
+}
+
+// NavHost = conteneur qui affiche le bon écran selon l'état du NavController.
+// Chaque composable() = une destination. navigate() empile, popBackStack() dépile.
+@androidx.compose.runtime.Composable
+private fun VitesseNavHost() {
+    val navController = rememberNavController()
+
+    NavHost(
+        navController = navController,
+        startDestination = VitesseDestinations.LIST
+    ) {
+        composable(VitesseDestinations.LIST) {
+            CandidateListScreen(
+                onCandidateClick = { id ->
+                    navController.navigate(VitesseDestinations.detail(id))
+                },
+                onAddClick = {
+                    navController.navigate(VitesseDestinations.ADD)
+                }
+            )
+        }
+
+        composable(VitesseDestinations.ADD) {
+            AddEditCandidateScreen(
+                candidateId = null,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // route paramétrée : récupère l'id de candidat depuis les arguments
+        composable(
+            route = VitesseDestinations.EDIT,
+            arguments = listOf(navArgument(VitesseDestinations.ARG_CANDIDATE_ID) { type = NavType.LongType })
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getLong(VitesseDestinations.ARG_CANDIDATE_ID)
+            AddEditCandidateScreen(
+                candidateId = id,
+                onBack = { navController.popBackStack() }
+            )
         }
     }
 }
