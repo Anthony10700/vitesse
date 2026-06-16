@@ -3,7 +3,6 @@ agp = "9.2.1"
 kotlin = "2.3.21"
 ksp = "2.3.9"
 coreKtx = "1.18.0"
-desugarJdkLibs = "2.1.4"
 
 composeBom = "2026.05.01"
 activityCompose = "1.13.0"
@@ -28,7 +27,6 @@ coroutinesTest = "1.11.0"
 [libraries]
 # Core Android
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugarJdkLibs" }
 
 # Compose
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }

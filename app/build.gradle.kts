@@ -5,13 +5,18 @@ plugins {
     alias(libs.plugins.hilt)
 }
 
+// indique à Room où exporter le schéma SQL (nécessaire pour les migrations)
+ksp {
+    arg("room.schemaLocation", "${projectDir}/schemas")
+}
+
 android {
     namespace = "com.vitesse.hr"
     compileSdk = 36
 
     defaultConfig {
         applicationId = "com.vitesse.hr"
-        minSdk = 24
+        minSdk = 29
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -32,7 +37,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlin {
@@ -47,7 +51,6 @@ android {
 dependencies {
     // Core Android
     implementation(libs.androidx.core.ktx)
-    coreLibraryDesugaring(libs.desugar.jdk.libs)
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))
