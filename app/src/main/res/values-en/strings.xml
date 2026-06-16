@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">Vitesse</string>
+
+    <!-- Candidates list screen -->
+    <string name="list_search_placeholder">Search a candidate</string>
+    <string name="list_tab_all">All</string>
+    <string name="list_tab_favorites">Favorites</string>
+    <string name="list_empty">No candidates</string>
+    <string name="list_fab_add_description">Add a candidate</string>
+
+    <!-- Form error messages -->
+    <string name="error_required">Required field</string>
+    <string name="error_email_invalid">Invalid email format</string>
+    <string name="error_date_required">Date of birth required</string>
+    <string name="error_date_future">Date must be in the past</string>
+    <string name="error_salary_invalid">Invalid salary</string>
+    <string name="error_salary_negative">Salary must be positive</string>
+
+    <!-- Form screen (add / edit) -->
+    <string name="form_screen_title_add">Add a candidate</string>
+    <string name="form_screen_title_edit">Edit candidate</string>
+    <string name="form_back_description">Back</string>
+    <string name="form_photo_description">Candidate photo</string>
+    <string name="form_field_first_name">First name</string>
+    <string name="form_field_last_name">Last name</string>
+    <string name="form_field_phone">Phone</string>
+    <string name="form_field_email">Email</string>
+    <string name="form_field_date_of_birth">Date of birth</string>
+    <string name="form_field_salary">Expected salary (€)</string>
+    <string name="form_field_notes">Notes</string>
+    <string name="form_button_save">Save</string>
+    <string name="form_date_picker_ok">OK</string>
+    <string name="form_date_picker_cancel">Cancel</string>
+
+    <!-- Detail screen -->
+    <string name="detail_back_description">Back</string>
+    <string name="detail_favorite_description">Favorite</string>
+    <string name="detail_edit_description">Edit</string>
+    <string name="detail_delete_description">Delete</string>
+    <string name="detail_action_call">Call</string>
+    <string name="detail_action_sms">SMS</string>
+    <string name="detail_action_email">Email</string>
+    <string name="detail_section_birthday">Birthday</string>
+    <string name="detail_section_salary">Expected salary</string>
+    <string name="detail_section_notes">Notes</string>
+    <string name="detail_birthday_format">%1$s (%2$d years old)</string>
+    <string name="detail_delete_dialog_title">Delete this candidate?</string>
+    <string name="detail_delete_dialog_message">This action cannot be undone.</string>
+    <string name="detail_delete_dialog_confirm">Delete</string>
+    <string name="detail_delete_dialog_cancel">Cancel</string>
+
+    <!-- EUR -> GBP conversion -->
+    <string name="detail_rate_loading">Loading conversion…</string>
+    <string name="detail_rate_offline">Conversion unavailable (offline)</string>
+    <string name="detail_rate_gbp_format">≈ %1$s</string>
+</resources>
