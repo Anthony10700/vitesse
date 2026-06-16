@@ -10,15 +10,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
+// ViewModel dédié au tab "Favoris" : ne gère QUE les candidats favoris
 @HiltViewModel
-class CandidateListViewModel @Inject constructor(
-    private val dao: CandidateDao
+class FavoriteCandidatesViewModel @Inject constructor(
+    dao: CandidateDao
 ) : ViewModel() {
 
-    // null = en cours de chargement, liste = données reçues (vide ou non)
-    val allCandidates: StateFlow<List<Candidate>?> = dao.getAll()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
-
-    val favoriteCandidates: StateFlow<List<Candidate>?> = dao.getFavorites()
+    val candidates: StateFlow<List<Candidate>?> = dao.getFavorites()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
 }

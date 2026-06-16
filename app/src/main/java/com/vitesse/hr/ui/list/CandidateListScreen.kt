@@ -23,8 +23,8 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.PrimaryTabRow
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,25 +35,22 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.vitesse.hr.R
 import com.vitesse.hr.data.local.Candidate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CandidateListScreen(
     onCandidateClick: (Long) -> Unit = {},
-    onAddClick: () -> Unit = {},
-    // Hilt fournit automatiquement le ViewModel
-    viewModel: CandidateListViewModel = hiltViewModel()
+    onAddClick: () -> Unit = {}
 ) {
-    // observe les StateFlow du ViewModel, recompose à chaque changement
-    val all by viewModel.allCandidates.collectAsStateWithLifecycle()
-    val favorites by viewModel.favoriteCandidates.collectAsStateWithLifecycle()
     // rememberSaveable : ces deux states survivent à une rotation d'écran
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
     var query by rememberSaveable { mutableStateOf("") }
@@ -65,7 +62,7 @@ fun CandidateListScreen(
                 containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                 contentColor = MaterialTheme.colorScheme.primary
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Ajouter un candidat")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.list_fab_add_description))
             }
         }
     ) { padding ->
@@ -75,7 +72,7 @@ fun CandidateListScreen(
             OutlinedTextField(
                 value = query,
                 onValueChange = { query = it },
-                placeholder = { Text("Rechercher un candidat") },
+                placeholder = { Text(stringResource(R.string.list_search_placeholder)) },
                 trailingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                 shape = MaterialTheme.shapes.extraLarge,
                 singleLine = true,
@@ -89,41 +86,73 @@ fun CandidateListScreen(
                 Tab(
                     selected = selectedTab == 0,
                     onClick = { selectedTab = 0 },
-                    text = { Text("Tous") }
+                    text = { Text(stringResource(R.string.list_tab_all)) }
                 )
                 Tab(
                     selected = selectedTab == 1,
                     onClick = { selectedTab = 1 },
-                    text = { Text("Favoris") }
+                    text = { Text(stringResource(R.string.list_tab_favorites)) }
                 )
             }
 
-            // on choisit la liste selon le tab actif, puis on filtre par recherche
-            // tout est fait en local (en mémoire), comme demandé dans les specs
-            val source = if (selectedTab == 0) all else favorites
-            val visible = source?.filter {
-                query.isBlank() ||
-                    it.firstName.contains(query, ignoreCase = true) ||
-                    it.lastName.contains(query, ignoreCase = true)
+            // chaque sous-page a son propre ViewModel, Hilt fournit le bon automatiquement
+            // le flow Room du tab inactif est arrêté après 5s (SharingStarted.WhileSubscribed)
+            when (selectedTab) {
+                0 -> AllCandidatesTab(query = query, onCandidateClick = onCandidateClick)
+                else -> FavoriteCandidatesTab(query = query, onCandidateClick = onCandidateClick)
             }
+        }
+    }
+}
 
-            // 3 états d'affichage : chargement, vide, ou liste
-            when {
-                source == null -> Box(Modifier.fillMaxSize(), Alignment.Center) {
-                    CircularProgressIndicator()
-                }
-                visible.isNullOrEmpty() -> Box(Modifier.fillMaxSize(), Alignment.Center) {
-                    Text(
-                        text = "Aucun candidat",
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-                // LazyColumn = équivalent moderne de RecyclerView, ne crée que les items visibles
-                else -> LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(visible, key = { it.id }) { candidate ->
-                        CandidateRow(candidate, onClick = { onCandidateClick(candidate.id) })
-                    }
-                }
+@Composable
+private fun AllCandidatesTab(
+    query: String,
+    onCandidateClick: (Long) -> Unit,
+    viewModel: AllCandidatesViewModel = hiltViewModel()
+) {
+    val candidates by viewModel.candidates.collectAsStateWithLifecycle()
+    CandidatesList(candidates = candidates, query = query, onCandidateClick = onCandidateClick)
+}
+
+@Composable
+private fun FavoriteCandidatesTab(
+    query: String,
+    onCandidateClick: (Long) -> Unit,
+    viewModel: FavoriteCandidatesViewModel = hiltViewModel()
+) {
+    val candidates by viewModel.candidates.collectAsStateWithLifecycle()
+    CandidatesList(candidates = candidates, query = query, onCandidateClick = onCandidateClick)
+}
+
+// rendu commun aux 2 tabs : loading / empty / liste
+@Composable
+private fun CandidatesList(
+    candidates: List<Candidate>?,
+    query: String,
+    onCandidateClick: (Long) -> Unit
+) {
+    // filtre local en mémoire selon la recherche
+    val visible = candidates?.filter {
+        query.isBlank() ||
+            it.firstName.contains(query, ignoreCase = true) ||
+            it.lastName.contains(query, ignoreCase = true)
+    }
+
+    when {
+        candidates == null -> Box(Modifier.fillMaxSize(), Alignment.Center) {
+            CircularProgressIndicator()
+        }
+        visible.isNullOrEmpty() -> Box(Modifier.fillMaxSize(), Alignment.Center) {
+            Text(
+                text = stringResource(R.string.list_empty),
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        // LazyColumn = équivalent moderne de RecyclerView, ne crée que les items visibles
+        else -> LazyColumn(modifier = Modifier.fillMaxSize()) {
+            items(visible, key = { it.id }) { candidate ->
+                CandidateRow(candidate, onClick = { onCandidateClick(candidate.id) })
             }
         }
     }
