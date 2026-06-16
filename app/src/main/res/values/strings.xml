@@ -31,4 +31,26 @@
     <string name="form_button_save">Sauvegarder</string>
     <string name="form_date_picker_ok">OK</string>
     <string name="form_date_picker_cancel">Annuler</string>
+
+    <!-- Écran détail -->
+    <string name="detail_back_description">Retour</string>
+    <string name="detail_favorite_description">Favori</string>
+    <string name="detail_edit_description">Modifier</string>
+    <string name="detail_delete_description">Supprimer</string>
+    <string name="detail_action_call">Appeler</string>
+    <string name="detail_action_sms">SMS</string>
+    <string name="detail_action_email">Email</string>
+    <string name="detail_section_birthday">Anniversaire</string>
+    <string name="detail_section_salary">Salaire attendu</string>
+    <string name="detail_section_notes">Notes</string>
+    <string name="detail_birthday_format">%1$s (%2$d ans)</string>
+    <string name="detail_delete_dialog_title">Supprimer ce candidat ?</string>
+    <string name="detail_delete_dialog_message">Cette action est irréversible.</string>
+    <string name="detail_delete_dialog_confirm">Supprimer</string>
+    <string name="detail_delete_dialog_cancel">Annuler</string>
+
+    <!-- Conversion EUR -> GBP -->
+    <string name="detail_rate_loading">Conversion en cours…</string>
+    <string name="detail_rate_offline">Conversion indisponible (hors-ligne)</string>
+    <string name="detail_rate_gbp_format">≈ %1$s</string>
 </resources>

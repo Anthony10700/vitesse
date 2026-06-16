@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.vitesse.hr.ui.detail.CandidateDetailScreen
 import com.vitesse.hr.ui.edit.AddEditCandidateScreen
 import com.vitesse.hr.ui.list.CandidateListScreen
 import com.vitesse.hr.ui.navigation.VitesseDestinations
@@ -76,6 +77,19 @@ private fun VitesseNavHost() {
             AddEditCandidateScreen(
                 candidateId = id,
                 onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(
+            route = VitesseDestinations.DETAIL,
+            arguments = listOf(navArgument(VitesseDestinations.ARG_CANDIDATE_ID) { type = NavType.LongType })
+        ) {
+            // le candidateId est récupéré par le ViewModel via SavedStateHandle
+            CandidateDetailScreen(
+                onBack = { navController.popBackStack() },
+                onEdit = { id ->
+                    navController.navigate(VitesseDestinations.edit(id))
+                }
             )
         }
     }
