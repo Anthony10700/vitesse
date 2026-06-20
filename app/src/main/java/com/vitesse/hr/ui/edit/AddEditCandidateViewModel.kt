@@ -1,6 +1,5 @@
 package com.vitesse.hr.ui.edit
 
-import android.util.Patterns
 import androidx.annotation.StringRes
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -143,7 +142,7 @@ class AddEditCandidateViewModel @Inject constructor(
             phoneNumber = if (state.phoneNumber.isBlank()) R.string.error_required else null,
             emailAddress = when {
                 state.emailAddress.isBlank() -> R.string.error_required
-                !Patterns.EMAIL_ADDRESS.matcher(state.emailAddress).matches() -> R.string.error_email_invalid
+                !EMAIL_REGEX.matches(state.emailAddress) -> R.string.error_email_invalid
                 else -> null
             },
             dateOfBirth = when {
@@ -163,5 +162,9 @@ class AddEditCandidateViewModel @Inject constructor(
     // helper pour réduire la verbosité des setters
     private inline fun update(transform: (AddEditUiState) -> AddEditUiState) {
         _uiState.value = transform(_uiState.value)
+    }
+
+    companion object {
+        private val EMAIL_REGEX = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
     }
 }

@@ -30,7 +30,7 @@ object NetworkModule {
             .add(KotlinJsonAdapterFactory())
             .build()
         return Retrofit.Builder()
-            .baseUrl("https://api.frankfurter.app/")
+            .baseUrl("https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/")
             .client(client)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()

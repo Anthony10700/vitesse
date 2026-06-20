@@ -53,8 +53,8 @@ class CandidateDetailViewModel @Inject constructor(
     private fun loadExchangeRate() {
         viewModelScope.launch {
             val rate = try {
-                val response = exchangeApi.getRate(from = "EUR", to = "GBP")
-                response.rates["GBP"]
+                val response = exchangeApi.getEurRates()
+                response.eur["gbp"]
             } catch (e: Exception) {
                 null
             }
