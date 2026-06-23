@@ -34,6 +34,6 @@ object NetworkModule {
             .client(client)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
-            .create(ExchangeApi::class.java)
+            .create(ExchangeApi::class.java) // dynamic proxy
     }
 }
